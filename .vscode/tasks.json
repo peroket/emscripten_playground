@@ -1,0 +1,114 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build debug",
+            "type": "shell",
+            "group": "build",
+            "command": "/home/peroket/projects/emsdk/upstream/emscripten/em++",
+            "args": [
+                "-o",
+                "${workspaceFolderBasename}.html",
+                "-std=c++17",
+                "-I../include/",
+                "-O0",
+                "-g",
+                "-Wall",
+                "-Wextra",
+                "-Wpedantic",
+                "-Werror",
+                "$(find",
+                "..",
+                "-type",
+                "f",
+                "-name",
+                "*.cpp)"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/build"
+            }
+        },
+        {
+            "label": "build release",
+            "type": "shell",
+            "group": "build",
+            "command": "/home/peroket/projects/emsdk/upstream/emscripten/em++",
+            "args": [
+                "-o",
+                "${workspaceFolderBasename}.html",
+                "-std=c++17",
+                "-I../include/",
+                "-O3",
+                "--llvm-lto",
+                "3",
+                "--closure",
+                "1",
+                "$(find",
+                "..",
+                "-type",
+                "f",
+                "-name",
+                "*.cpp)"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/build"
+            }
+        },
+        {
+            "label": "copy html",
+            "type": "shell",
+            "group": "build",
+            "problemMatcher": [],
+            "command": "cp *.html /mnt/c/Users/Adrien/Documents/emscripten_test/",
+            "options": {
+                "cwd": "${workspaceFolder}/build"
+            }
+        },
+        {
+            "label": "copy js",
+            "type": "shell",
+            "group": "build",
+            "problemMatcher": [],
+            "command": "cp *.js /mnt/c/Users/Adrien/Documents/emscripten_test/",
+            "options": {
+                "cwd": "${workspaceFolder}/build"
+            }
+        },
+        {
+            "label": "copy wasm",
+            "type": "shell",
+            "group": "build",
+            "problemMatcher": [],
+            "command": "cp *.wasm /mnt/c/Users/Adrien/Documents/emscripten_test/",
+            "options": {
+                "cwd": "${workspaceFolder}/build"
+            }
+        },
+        {
+            "label": "build and copy debug",
+            "dependsOrder": "sequence",
+            "group": "build",
+            "problemMatcher": [],
+            "dependsOn": [
+                "build debug",
+                "copy html",
+                "copy js",
+                "copy wasm"
+            ]
+        },
+        {
+            "label": "build and copy release",
+            "dependsOrder": "sequence",
+            "group": "build",
+            "problemMatcher": [],
+            "dependsOn": [
+                "build release",
+                "copy html",
+                "copy js",
+                "copy wasm"
+            ]
+        }
+    ]
+}

@@ -1,0 +1,15 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/usr/include",
+                "/usr/include/c++/9/",
+                "/home/peroket/projects/emsdk/upstream/emscripten/system/include/*"
+            ],
+            "defines": []
+        }
+    ],
+    "version": 4
+}
