@@ -5,21 +5,21 @@
 namespace Render
 {
 EM_JS(void, initGlAndLoadShaders, (), {
-    var gl = document.getElementById('canvas').getContext('webgl2');
+    let gl = document.getElementById('canvas').getContext('webgl2');
 
     if (!gl)
         throw Error('Could not load WebGl2 context');
 
     Module['gl'] = gl;
 
-    var folder   = 'shaders';
-    var files    = FS.readdir(folder);
-    var shaders  = new Map();
-    var programs = new Map();
+    const folder = 'shaders';
+    const files  = FS.readdir(folder);
+    let shaders  = new Map();
+    let programs = new Map();
 
     for (file of files)
     {
-        var type = undefined;
+        let type = undefined;
 
         switch (PATH.extname(file))
         {
@@ -32,15 +32,14 @@ EM_JS(void, initGlAndLoadShaders, (), {
             break;
 
         default:
-            found = false;
         }
 
         if (type == undefined)
             continue;
 
         // Compile the shader we got
-        var shader = gl.createShader(type);
-        var source = FS.readFile(PATH.join(folder, file), {encoding : 'utf8', flags : 'r'});
+        const shader = gl.createShader(type);
+        const source = FS.readFile(PATH.join(folder, file), {encoding : 'utf8', flags : 'r'});
 
         gl.shaderSource(shader, source);
         gl.compileShader(shader);
@@ -52,8 +51,8 @@ EM_JS(void, initGlAndLoadShaders, (), {
         }
 
         // Check if we have the other shader
-        var name  = file.slice(0, -5);
-        var other = shaders.get(name);
+        const name  = file.slice(0, -5);
+        const other = shaders.get(name);
 
         // If we do not, then store the current one and process the next shader
         if (!other)
@@ -63,7 +62,7 @@ EM_JS(void, initGlAndLoadShaders, (), {
         }
 
         // Otherwise, we can create the program
-        var program = gl.createProgram();
+        const program = gl.createProgram();
 
         gl.attachShader(program, shader);
         gl.attachShader(program, other);
