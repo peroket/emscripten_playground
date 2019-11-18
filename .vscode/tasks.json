@@ -9,10 +9,12 @@
             "group": "build",
             "command": "/home/peroket/projects/emsdk/upstream/emscripten/em++",
             "args": [
+                "--preload-file",
+                "shaders",
                 "-o",
-                "${workspaceFolderBasename}.html",
+                "build/${workspaceFolderBasename}.html",
                 "-std=c++17",
-                "-I../include/",
+                "-Iinclude/",
                 "-O0",
                 "-g",
                 "-Wall",
@@ -20,15 +22,12 @@
                 "-Wpedantic",
                 "-Werror",
                 "$(find",
-                "..",
+                ".",
                 "-type",
                 "f",
                 "-name",
                 "*.cpp)"
-            ],
-            "options": {
-                "cwd": "${workspaceFolder}/build"
-            }
+            ]
         },
         {
             "label": "build release",
@@ -36,55 +35,48 @@
             "group": "build",
             "command": "/home/peroket/projects/emsdk/upstream/emscripten/em++",
             "args": [
+                "--preload-file",
+                "shaders",
                 "-o",
-                "${workspaceFolderBasename}.html",
+                "build/${workspaceFolderBasename}.html",
                 "-std=c++17",
-                "-I../include/",
+                "-Iinclude/",
                 "-O3",
                 "--llvm-lto",
                 "3",
                 "--closure",
                 "1",
                 "$(find",
-                "..",
+                ".",
                 "-type",
                 "f",
                 "-name",
                 "*.cpp)"
-            ],
-            "options": {
-                "cwd": "${workspaceFolder}/build"
-            }
+            ]
         },
         {
             "label": "copy html",
             "type": "shell",
-            "group": "build",
             "problemMatcher": [],
-            "command": "cp *.html /mnt/c/Users/Adrien/Documents/emscripten_test/",
-            "options": {
-                "cwd": "${workspaceFolder}/build"
-            }
+            "command": "cp build/*.html /mnt/c/Users/Adrien/Documents/emscripten_test/"
         },
         {
             "label": "copy js",
             "type": "shell",
-            "group": "build",
             "problemMatcher": [],
-            "command": "cp *.js /mnt/c/Users/Adrien/Documents/emscripten_test/",
-            "options": {
-                "cwd": "${workspaceFolder}/build"
-            }
+            "command": "cp build/*.js /mnt/c/Users/Adrien/Documents/emscripten_test/"
         },
         {
             "label": "copy wasm",
             "type": "shell",
-            "group": "build",
             "problemMatcher": [],
-            "command": "cp *.wasm /mnt/c/Users/Adrien/Documents/emscripten_test/",
-            "options": {
-                "cwd": "${workspaceFolder}/build"
-            }
+            "command": "cp build/*.wasm /mnt/c/Users/Adrien/Documents/emscripten_test/"
+        },
+        {
+            "label": "copy data",
+            "type": "shell",
+            "problemMatcher": [],
+            "command": "cp build/*.data /mnt/c/Users/Adrien/Documents/emscripten_test/"
         },
         {
             "label": "build and copy debug",
@@ -95,7 +87,8 @@
                 "build debug",
                 "copy html",
                 "copy js",
-                "copy wasm"
+                "copy wasm",
+                "copy data"
             ]
         },
         {
@@ -107,8 +100,31 @@
                 "build release",
                 "copy html",
                 "copy js",
-                "copy wasm"
+                "copy wasm",
+                "copy data"
             ]
-        }
+        },
+        // {
+        //     "label": "clean local build",
+        //     "command": "rm -r build && mkdir build",
+        //     "problemMatcher": []
+        // },
+        // {
+        //     "label": "clean copy build",
+        //     "command": "rm",
+        //     "args": [
+        //         "/mnt/c/Users/Adrien/Documents/emscripten_test/*"
+        //     ],
+        //     "problemMatcher": []
+        // },
+        // {
+        //     "label": "clean",
+        //     "group": "build",
+        //     "problemMatcher": [],
+        //     "dependsOn": [
+        //         "clean local build",
+        //         "clean copy build"
+        //     ]
+        // },
     ]
 }

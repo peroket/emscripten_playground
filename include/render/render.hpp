@@ -2,69 +2,9 @@
 
 #include <emscripten.h>
 
-EM_JS(void, init, (), {
-    Module['createShader'] = function(type, source)
-    {
-        var gl     = Module.gl;
-        var shader = gl.createShader(type);
-
-        gl.shaderSource(shader, source);
-        gl.compileShader(shader);
-
-        var success = gl.getShaderParameter(shader, gl.COMPILE_STATUS);
-        if (success)
-        {
-            return shader;
-        }
-
-        console.log(gl.getShaderInfoLog(shader));
-        gl.deleteShader(shader);
-
-        return undefined;
-    };
-
-    Module['createProgram'] = function(vertexShader, fragmentShader)
-    {
-        var gl      = Module.gl;
-        var program = gl.createProgram();
-
-        gl.attachShader(program, vertexShader);
-        gl.attachShader(program, fragmentShader);
-        gl.linkProgram(program);
-
-        var success = gl.getProgramParameter(program, gl.LINK_STATUS);
-        if (success)
-        {
-            return program;
-        }
-
-        console.log(gl.getProgramInfoLog(program));
-        gl.deleteProgram(program);
-
-        return undefined;
-    };
-
-    Module['gl'] = document.getElementById('canvas').getContext('webgl2');
-});
-
 EM_JS(void, initDraw, (), {
-    var gl = Module.gl;
-    if (!gl)
-    {
-        return;
-    }
-
-    var vertexShaderSource =
-        '#version 300 es\nin vec4 a_position;\nvoid main(){gl_Position = a_position;}';
-    var fragmentShaderSource =
-        '#version 300 es\nprecision mediump float;\nout vec4 outColor;\nvoid main(){outColor = vec4(1, 0, 0.5, 1);}';
-
-    // create GLSL shaders, upload the GLSL source, compile the shaders
-    var vertexShader   = Module.createShader(gl.VERTEX_SHADER, vertexShaderSource);
-    var fragmentShader = Module.createShader(gl.FRAGMENT_SHADER, fragmentShaderSource);
-
-    // Link the two shaders into a program
-    var program = Module.createProgram(vertexShader, fragmentShader);
+    var gl      = Module.gl;
+    var program = Module.glPrograms.get('simple_test');
 
     // look up where the vertex data needs to go.
     var positionAttributeLocation = gl.getAttribLocation(program, "a_position");

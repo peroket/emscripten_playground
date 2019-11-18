@@ -1,9 +1,11 @@
 #include <emscripten.h>
 
+#include "render/init.hpp"
 #include "render/render.hpp"
 
-int main() {
-  init();
-  initDraw();
-  return 0;
+int main()
+{
+    Render::initGlAndLoadShaders();
+    initDraw();
+    return 0;
 }
